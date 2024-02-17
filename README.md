@@ -1,79 +1,35 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# PassLogify
 
-# Getting Started
+## Description
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+PassLogify is a simple yet useful password manager that uses an email and password pair to keep track of your different logins throughout the internet. It provides a simple and secure way to store, label, and organize your passwords, keeping them safe with PassLogify.
 
-## Step 1: Start the Metro Server
+## IMPORTANT :warning:
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+PassLogify does not store your passwords on any server. All passwords are stored locally on your device.
+But as a reminder, never give your passwords to anyone, not even the staff of PassLogify.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+## Features
 
-```bash
-# using npm
-npm start
+- Add a new entry with a password and an email or username.
+- View all entries on a dashboard.
+- Update a pair from your entries.
+- Delete a pair from your entries.
+- Organize your entries by labels and reorder them. _(Coming soon - labels will be displayed on the dashboard and users will be able to reorder them using drag and drop.)_
 
-# OR using Yarn
-yarn start
-```
+## Installation
 
-## Step 2: Start your Application
+1. Clone the repository by running `git clone git@github.com:Lallethu/PassLogify.git` in your terminal.
+2. Open the project folder and locate the `android/app/build/outputs/apk/debug` folder.
+3. :warning: **APP STILL IN DEV** :warning: Copy the `app-debug.apk` file to your favorite messaging app and send it to yourself _(or use a USB cable to transfer it to your device)_.
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+## Usage
 
-### For Android
+1. Open the app
+2. Slide up or tap the screen to access the dashboard
+3. Add a new entry by tapping the middle button _(Two files icon with a plus sign)_
+4. Enjoy your password manager :)
 
-```bash
-# using npm
-npm run android
+## License
 
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
