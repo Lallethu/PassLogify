@@ -11,7 +11,7 @@ import { COLORS, STYLES } from '../constantes/styles';
 
 const { width, height } = Dimensions.get('screen');
 
-const LandingScreen = () => {
+const LandingScreen = ({ navigation }) => {
 	const [position, setPosition] = useState({ x: 0, y: 0 }); // position of the user finger
 	const panResponder = useRef(
 		// panResponder to handle the user finger
@@ -36,9 +36,7 @@ const LandingScreen = () => {
 	).current;
 
 	const redirectToDashboard = () => {
-		// redirect to the dashboard screen
-		// for now just console.log a message
-		console.log('Redirecting to the dashboard...');
+		navigation.navigate('Dashboard');
 	};
 
 	return (
@@ -64,7 +62,7 @@ const LandingScreen = () => {
 				/>
 			</View>
 			<Text style={styles.textTarget}>
-			↕️ Slide the logo up or down to unclock
+				↕️ Slide the logo up or down to unclock
 			</Text>
 		</View>
 	);
