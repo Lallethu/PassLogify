@@ -7,7 +7,8 @@ import {
 	PanResponder,
 	Text,
 } from 'react-native';
-import { COLORS, STYLES } from '../constantes/styles';
+import { STYLES } from '../constantes/styles';
+import { BRAND_COLORS, SUPPORTING_COLORS, NEUTRALS } from '../constantes/colors';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		left: 83,
 		bottom: 20,
-		color: COLORS.PALETTE.D_DEEPBLUE,
+		color: BRAND_COLORS.primary[700],
 		fontWeight: 'bold',
 	},
 });
