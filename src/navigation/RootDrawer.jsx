@@ -1,5 +1,4 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import React from 'react';
 import DashboardScreen from '../screens/DashboardScreen';
 import AboutScreen from '../screens/AboutScreen';
 import AppSettingsScreen from '../screens/AppSettingsScreen';
