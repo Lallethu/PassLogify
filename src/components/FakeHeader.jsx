@@ -6,7 +6,7 @@ import { STYLES } from '../constantes/styles';
 import { BRAND_COLORS, NEUTRALS } from '../constantes/colors';
 
 
-export const BackToDashboardHeader = () => {
+export const FakeHeader = () => {
   const navigation = useNavigation();
   const handleNavigateToDashboard = () => {
     navigation.navigate('Dashboard');
