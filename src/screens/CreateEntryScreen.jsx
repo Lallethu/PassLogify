@@ -3,12 +3,12 @@ import React from 'react';
 import FakeBottomTab from '../components/FakeBottomTab';
 import { STYLES } from '../constantes/styles';
 import CreateEntryForm from '../components/CreateEntryForm';
-import { BackToDashboardHeader } from '../components/BackToDashboardHeader';
+import { FakeHeader } from '../components/FakeHeader';
 
 const CreateEntryScreen = () => {
 	return (
 		<>
-			<BackToDashboardHeader />
+			<FakeHeader />
 			<View style={STYLES.container}>
 				<CreateEntryForm />
 			</View>
