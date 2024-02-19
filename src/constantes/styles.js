@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
 import { BRAND_COLORS, SUPPORTING_COLORS, NEUTRALS } from './colors';
-import { LightTheme, DarkTheme } from './theme';
 
 export const STYLES = StyleSheet.create({
 	container: {
