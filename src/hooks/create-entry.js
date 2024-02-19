@@ -1,4 +1,4 @@
-import { ToastAndroid } from 'react-native';
+import { Alert, ToastAndroid } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createEntryValidator } from '../services/createEntryValidator';
 import { useState } from 'react';
@@ -43,7 +43,7 @@ export const useCreateEntry = () => {
 				});
 				if (parsedData.length > 0) {
 					return parsedData;
-        }
+				}
 			} else {
 				return [];
 			}
@@ -87,8 +87,56 @@ export const useCreateEntry = () => {
 		}
 	};
 
+	const deleteAllEntries = async () => {
+		try {
+			const keys = await AsyncStorage.getAllKeys();
+			const entryKeys = keys.filter(key => key !== 'theme');
+
+			if (entryKeys.length > 0) {
+				const data = await AsyncStorage.multiGet(entryKeys);
+				const parsedData = data.map(login => {
+					return JSON.parse(login[1]);
+				});
+        
+				if (parsedData.length > 0) {
+					Alert.alert(
+						'Are you sure?',
+						'This will delete all your entries. This action cannot be undone.',
+						[
+							{
+								text: 'Cancel',
+								onPress: () => console.log('Cancel Pressed'),
+								style: 'cancel',
+							},
+							{
+								text: 'Yes, delete everything',
+								onPress: async () => {
+									console.log(parsedData);
+									await AsyncStorage.multiRemove(entryKeys);
+								},
+							},
+						],
+						{ cancelable: true },
+					);
+				}
+			} else {
+				console.log('No entries to dump');
+				ToastAndroid.showWithGravityAndOffset(
+					'No entries to dump',
+					ToastAndroid.LONG,
+					ToastAndroid.BOTTOM,
+					15,
+					50,
+				);
+			}
+		} catch (e) {
+			console.error(e);
+		}
+	};
+
 	return {
 		getData,
+		deleteAllEntries,
 		deleteData,
 		createEntry,
 	};
