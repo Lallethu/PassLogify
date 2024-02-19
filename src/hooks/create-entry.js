@@ -41,7 +41,6 @@ export const useCreateEntry = () => {
 				const parsedData = data.map(login => {
 					return JSON.parse(login[1]);
 				});
-				console.log('parsedData: ', parsedData);
 				if (parsedData.length > 0) {
 					return parsedData;
         }
@@ -81,7 +80,6 @@ export const useCreateEntry = () => {
 				return;
 			}
 			await AsyncStorage.setItem(data.groupLabel, JSON.stringify(data));
-			console.log('on save: ', data);
 			useToastMessage('Data saved');
 			setDataUser(data);
 		} catch (e) {
