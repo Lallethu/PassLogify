@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text } from 'react-native';
 import { STYLES } from '../constantes/styles';
 import { BRAND_COLORS } from '../constantes/colors';
@@ -71,7 +70,7 @@ const DashboardScreen = () => {
 			<FakeModal />
 			<View style={STYLES.container}>
 				<ScrollView>
-					{listOfLogins.length > 0 ? (
+					{(listOfLogins.length > 0) ? (
 						listOfLogins.map((login, index) => (
               // definitely a good idea to move this to a custom component made to be mapped over
 							<View key={index} style={STYLES.card}>
