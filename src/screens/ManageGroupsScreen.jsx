@@ -2,12 +2,12 @@ import { View, Text } from 'react-native';
 import React from 'react';
 import FakeBottomTab from '../components/FakeBottomTab';
 import { STYLES } from '../constantes/styles';
-import { BackToDashboardHeader } from '../components/BackToDashboardHeader';
+import { FakeHeader } from '../components/FakeHeader';
 
 const ManageGroupsScreen = () => {
 	return (
 		<>
-			<BackToDashboardHeader />
+			<FakeHeader />
 			<View style={STYLES.container}>
 				<Text>ManageGroupsScreen</Text>
 			</View>
