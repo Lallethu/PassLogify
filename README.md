@@ -12,10 +12,11 @@ But as a reminder, never give your passwords to anyone, not even the staff of Pa
 ## Features
 
 - Add a new entry with a password and an email or username.
-- View all entries on a dashboard.
-- Update a pair from your entries.
-- Delete a pair from your entries.
-- Organize your entries by labels and reorder them. _(Coming soon - labels will be displayed on the dashboard and users will be able to reorder them using drag and drop.)_
+- View all your entries on the dashboard.
+- Update an entry. _(Coming soon)_
+- Delete a/all entr(y/ies) (remove one - from manage groups / clear all - from the app settings).
+- Organize your entries by labels and reorder them. _(Coming soon)_
+- Switch between light and dark mode. _(Need to be extended to all the app screens, currently only the settings screen can be switched)_ 
 
 ## Installation
 
@@ -33,3 +34,19 @@ But as a reminder, never give your passwords to anyone, not even the staff of Pa
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/F-T-X-feature-feature-name`, F-T mean Forked-Ticket and X is the number of the feature, feature-name is the name of the feature, like `F-T-1-feature-avatar-icon`)
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request with the original project and I will review it as soon as possible.
+
+## Next to come
+
+- T-7: Fix and implement the theme on all the app screens.
+- T-8: Implement the update/delete one entry feature.
+- T-9: Implement the organize feature.
+- T-10: Create some more icons for the app.
+- T-11: Populate the about screen with the app and (Studio/Team) informations.
