@@ -14,9 +14,8 @@ export const BackToDashboardHeader = () => {
 
   return (
     <View style={styles.container}>
-      <Text></Text>
       <CustomButton onPress={handleNavigateToDashboard} style={[STYLES.button, {backgroundColor: BRAND_COLORS.primary[600]}]}> 
-        <Text style={[{color: BRAND_COLORS.secondary[500]}]}>Go to Dashboard</Text>
+        <Text style={[{color: BRAND_COLORS.secondary[500]}]}>Go back</Text>
       </CustomButton>
     </View>
   );
