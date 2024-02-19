@@ -50,3 +50,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - T-9: Implement the organize feature.
 - T-10: Create some more icons for the app.
 - T-11: Populate the about screen with the app and (Studio/Team) informations.
+- T-12: In the create entry implement the password generator.
