@@ -1,36 +1,49 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { CustomButton } from './CustomButton';
 import { useNavigation } from '@react-navigation/core';
-import { STYLES } from '../constantes/styles';
-import { BRAND_COLORS, NEUTRALS } from '../constantes/colors';
-
+import useTheme from '../hooks/useTheme';
+import useThemedStyles from '../hooks/useThemeStyles';
 
 export const FakeHeader = () => {
-  const navigation = useNavigation();
-  const handleNavigateToDashboard = () => {
-    navigation.navigate('Dashboard');
-  };
+	const theme = useTheme();
+	const style = useThemedStyles(styles);
+	const navigation = useNavigation();
+	const handleNavigateToDashboard = () => {
+		navigation.navigate('Dashboard');
+	};
 
-  return (
-    <View style={styles.container}>
-      <CustomButton onPress={handleNavigateToDashboard} style={[STYLES.button, {backgroundColor: BRAND_COLORS.primary[600]}]}> 
-        <Text style={[{color: BRAND_COLORS.secondary[500]}]}>Go back</Text>
-      </CustomButton>
-    </View>
-  );
+	return (
+		<View style={style.container}>
+			<CustomButton
+				onPress={handleNavigateToDashboard}
+				style={[
+					style.button,
+					{ backgroundColor: theme.colors.BACKGROUND_TINT },
+				]}>
+				<Text style={{ color: theme.colors.TEXT }}>Go back</Text>
+			</CustomButton>
+		</View>
+	);
 };
 
-const styles = {
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 10,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-};
+const styles = theme =>
+	StyleSheet.create({
+		container: {
+			flexDirection: 'row',
+			alignItems: 'center',
+			justifyContent: 'space-between',
+			padding: 10,
+			backgroundColor: theme.colors.BACKGROUND,
+		},
+		title: {
+			fontSize: 18,
+			fontWeight: 'bold',
+		},
+		button: {
+			padding: 10,
+			borderRadius: 5,
+			margin: 10,
+			maxWidth: 65,
+		},
+	});

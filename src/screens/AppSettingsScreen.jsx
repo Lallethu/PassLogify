@@ -1,14 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
-import useThemedStyles from '../test/useThemedStyled';
-import useTheme from '../test/useTheme';
+import useTheme from '../hooks/useTheme';
+import useThemedStyles from '../hooks/useThemeStyles';
 import { ScrollView } from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 import FakeBottomTab from '../components/FakeBottomTab';
 import { useCreateEntry } from '../hooks/create-entry';
 
 const AppSettingsScreen = () => {
-	const currentTheme = AsyncStorage.getItem('theme');
 	const { deleteAllEntries } = useCreateEntry();
 	const theme = useTheme();
 	const style = useThemedStyles(styles);
@@ -27,7 +26,9 @@ const AppSettingsScreen = () => {
 					onPress={() => {
 						deleteAllEntries();
 					}}>
-					<Text style={style.buttonText}>Delete all entries</Text>
+					<Text style={[{ color: theme.colors.TEXT }]}>
+						Delete all entries
+					</Text>
 				</TouchableOpacity>
 			</>
 		);
@@ -38,14 +39,16 @@ const AppSettingsScreen = () => {
 			<View style={style.body}>
 				<ScrollView style={{ width: '100%' }}>
 					<View style={style.shortSection}>
-						<Text style={style.text}>Switch themes</Text>
+						<Text style={[style.title, style.text]}>
+							Switch themes
+						</Text>
 						<TouchableOpacity
 							onPress={theme.toggleTheme}
 							opacity={0.58}
 							value={theme.isLightTheme}
 							style={[
 								{
-									backgroundColor: theme.colors.SECONDARY,
+									backgroundColor: theme.colors.BUTTON,
 									...style.button,
 									elevation: 8,
 								},
@@ -58,11 +61,10 @@ const AppSettingsScreen = () => {
 								}}>
 								<Text
 									style={[
-										style.buttonText,
 										{
 											color: theme.isLightTheme
 												? 'white'
-												: 'darkslategrey',
+												: theme.colors.TEXT,
 										},
 									]}>
 									{theme.isLightTheme
@@ -90,6 +92,7 @@ const AppSettingsScreen = () => {
 		</>
 	);
 };
+
 const styles = theme =>
 	StyleSheet.create({
 		body: {
