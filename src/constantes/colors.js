@@ -1,79 +1,97 @@
-export const BRAND_COLORS = {
-	primary: {
-		100: '#e5e8fa',
-		200: '#b0b9f1',
-		300: '#7b8ae7',
-		400: '#465bde',
-		500: '#2339c2',
-		600: '#1c2e9c',
-		700: '#152275',
-		800: '#0e174f',
-		900: '#070c29',
-	},
-	secondary: {
-		100: '#fff9e9',
-		200: '#ffeebc',
-		300: '#ffe38f',
-		400: '#ffd862',
-		500: '#ffcd35',
-		600: '#f5b900',
-		700: '#b68900',
-		800: '#785a00',
-		900: '#392b00',
-	},
+const PERSIAN_BLUE = {
+	100: '#D2DAFB',
+	200: '#A7B6F8',
+	300: '#788BEC',
+	400: '#5468DA',
+	500: '#2339C2',
+	600: '#192BA6',
+	700: '#111F8B',
+	800: '#0B1470',
+	900: '#060D5D',
+};
+const GOLDEN_SPELL = {
+	100: '#fFF9D6',
+	200: '#FFF1AE',
+	300: '#FFE785',
+	400: '#FFDD67',
+	500: '#FFCD35',
+	600: '#DBA926',
+	700: '#B7881A',
+	800: '#936910',
+	900: '#7A530A',
 };
 
-export const SUPPORTING_COLORS = {
-	danger: {
-		100: '#f9e2e1',
-		200: '#eea8a5',
-		300: '#e26d69',
-		400: '#d7332d',
-		500: '#9e231e',
-		600: '#801c18',
-		700: '#611612',
-		800: '#430f0d',
-		900: '#250807',
-	},
-	success: {
-		100: '#e1f9e7',
-		200: '#a5eeb6',
-		300: '#69e285',
-		400: '#2dd754',
-		500: '#1e9e3c',
-		600: '#188030',
-		700: '#126125',
-		800: '#0d4319',
-		900: '#07250e',
-	},
-	information: {
-		100: '#e7f7fa',
-		200: '#b6e7f1',
-		300: '#86d8e8',
-		400: '#55c8df',
-		500: '#28b6d2',
-		600: '#2092a8',
-		700: '#186d7e',
-		800: '#104954',
-		900: '#08252a',
-	},
-	warning: {
-		100: '#f9ede1',
-		200: '#eec8a5',
-		300: '#e2a469',
-		400: '#d77f2d',
-		500: '#9e5c1e',
-		600: '#804a18',
-		700: '#613912',
-		800: '#43270d',
-		900: '#251507',
-	},
+const NORTH_TEXAS_GREEN = {
+	100: '#D2F9CC',
+	200: '#9EF49C',
+	300: '#66DE6F',
+	400: '#3DBD53',
+	500: '#0F9132',
+	600: '#0A7C34',
+	700: '#076834',
+	800: '#045431',
+	900: '#02452E',
+};
+const GUMMY_DOLPHINS = {
+	100: '#CCFCF9',
+	200: '#9AF9FA',
+	300: '#66E6F1',
+	400: '#3FCBE4',
+	500: '#08a5d3',
+	600: '#0580B5',
+	700: '#046097',
+	800: '#02457A',
+	900: '#013165',
+};
+const KIN_GOLD = {
+	100: '#FEF3CB',
+	200: '#FDE398',
+	300: '#FBCF64',
+	400: '#F7B93D',
+	500: '#F29900',
+	600: '#D07B00',
+	700: '#AE6100',
+	800: '#8C4800',
+	900: '#743700',
+};
+const CLEAR_RED = {
+	100: '#FCE2D1',
+	200: '#F9C0A4',
+	300: '#EE9274',
+	400: '#DE6750',
+	500: '#C92C1E',
+	600: '#AC1515',
+	700: '#900F19',
+	800: '#74091B',
+	900: '#60051C',
+};
+const MIDNIGHT_BLUE = {
+	100: '#E0EFF6',
+	200: '#C2DEED',
+	300: '#93B4CA',
+	400: '#637F96',
+	500: '#2C3E50',
+	600: '#203044',
+	700: '#162439',
+	800: '#0E192E',
+	900: '#081126',
+};
+const METALLIC = {
+	100: '#F9FBFC',
+	200: '#F4F8F9',
+	300: '#E7ECEE',
+	400: '#D5DADD',
+	500: '#BDC3C7',
+	600: '#8A9CAB',
+	700: '#5F768F',
+	800: '#3C5373',
+	900: '#24395F',
 };
 
-export const NEUTRALS = {
-	white: '#FcFcFc',
-	black: '#282828',
-	gray: {
+const NEUTRALS = {
+	WHITE: '#FcFcFc',
+	BLACK: '#282828',
+	GRAY: {
 		100: '#eaedf0',
 		200: '#c0c8d3',
 		300: '#95a3b6',
@@ -85,3 +103,61 @@ export const NEUTRALS = {
 		900: '#12151a',
 	},
 };
+
+const common = {
+	PRIMARY: PERSIAN_BLUE[500],
+	SECONDARY: GOLDEN_SPELL[500],
+	SUCCESS: NORTH_TEXAS_GREEN[500],
+	DANGER: CLEAR_RED[400],
+	WARNING: KIN_GOLD[500],
+	INFORMATION: GUMMY_DOLPHINS[500],
+};
+
+const YANKEE_DOODLE = {
+	100: '#EAF1F7',
+	200: '#D6E3F0',
+	300: '#B0C0D2',
+	400: '#8492A5',
+	500: '#4E596A',
+	600: '#39455B',
+	700: '#27324C',
+	800: '#18223D',
+	900: '#0E1732',
+};
+
+const light = {
+	...common,
+	BACKGROUND: YANKEE_DOODLE[100],
+	BACKGROUND_TINT: YANKEE_DOODLE[200],
+	TEXT: YANKEE_DOODLE[700],
+	TEXT_SECONDARY: YANKEE_DOODLE[500],
+	TEXT_TINT: YANKEE_DOODLE[200],
+	BORDER: YANKEE_DOODLE[500],
+	CARD: METALLIC[100],
+	BUTTON: YANKEE_DOODLE[500],
+	OUTLINED_BUTTON: YANKEE_DOODLE[100],
+	OUTLINED_BUTTON_TEXT: YANKEE_DOODLE[500],
+	TITLE: YANKEE_DOODLE[500],
+	INPUT: YANKEE_DOODLE[300],
+};
+
+const dark = {
+	...common,
+	BACKGROUND: NEUTRALS.GRAY[700],
+	BACKGROUND_TINT: NEUTRALS.GRAY[600],
+	TEXT: YANKEE_DOODLE[100],
+	TEXT_SECONDARY: NEUTRALS.GRAY[500],
+	BORDER: YANKEE_DOODLE[500],
+	CARD: NEUTRALS.GRAY[800],
+	BUTTON: YANKEE_DOODLE[500],
+	OUTLINED_BUTTON: NEUTRALS.BLACK,
+	OUTLINED_BUTTON_TEXT: PERSIAN_BLUE[500],
+	TITLE: YANKEE_DOODLE[100],
+	INPUT: YANKEE_DOODLE[400],
+};
+
+const brand = {
+	// feature: T-20
+};
+
+export const colors = { light, dark };
