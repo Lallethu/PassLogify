@@ -1,4 +1,4 @@
-import useTheme from './useTheme';
+import useTheme from '../hooks/useTheme';
 
 const useThemedStyles = styles => {
 	const theme = useTheme();
