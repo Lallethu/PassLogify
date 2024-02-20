@@ -45,7 +45,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Next to come
 
-- T-7: Fix and implement the theme on all the app screens.
+- ~~T-7: Fix and implement the theme on all the app screens.~~
 - T-8: Implement the update/delete one entry feature.
 - T-9: Implement the organize feature.
 - T-10: Create some more icons for the app.
