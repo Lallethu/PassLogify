@@ -111,8 +111,14 @@ export const useCreateEntry = () => {
 							{
 								text: 'Yes, delete everything',
 								onPress: async () => {
-									console.log(parsedData);
 									await AsyncStorage.multiRemove(entryKeys);
+                  ToastAndroid.showWithGravityAndOffset(
+                    'All entries deleted',
+                    ToastAndroid.LONG,
+                    ToastAndroid.BOTTOM,
+                    15,
+                    50,
+                  );
 								},
 							},
 						],
@@ -120,7 +126,6 @@ export const useCreateEntry = () => {
 					);
 				}
 			} else {
-				console.log('No entries to dump');
 				ToastAndroid.showWithGravityAndOffset(
 					'No entries to dump',
 					ToastAndroid.LONG,
