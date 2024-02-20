@@ -1,15 +1,17 @@
-import { View, Text } from 'react-native';
 import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { CustomButton } from './CustomButton';
-import { STYLES } from '../constantes/styles';
 import {
 	GestureHandlerRootView,
 	TextInput,
 } from 'react-native-gesture-handler';
 import { useCreateEntry } from '../hooks/create-entry';
-import { BRAND_COLORS } from '../constantes/colors';
+import useTheme from '../hooks/useTheme';
+import useThemedStyles from '../hooks/useThemeStyles';
 
 const CreateEntryForm = () => {
+	const theme = useTheme();
+	const style = useThemedStyles(styles);
 	const { createEntry } = useCreateEntry();
 	const [groupLabel, setGroupLabel] = useState('');
 	const [username, setUsername] = useState('');
@@ -17,47 +19,137 @@ const CreateEntryForm = () => {
 	const [password, setPassword] = useState('');
 
 	return (
-		<>
-			<View>
-				<View style={STYLES.card}>
-					<Text style={[STYLES.title, {color: BRAND_COLORS.primary[700]}]}>CreateEntryForm</Text>
-					<View style={STYLES.spacer} />
-					<GestureHandlerRootView>
-						<TextInput
-							placeholder="Group Label"
-							onChangeText={setGroupLabel}
-						/>
-						<TextInput
-							placeholder="Username"
-							textContentType="username"
-							onChangeText={setUsername}
-						/>
-						<TextInput
-							placeholder="Email"
-							textContentType="emailAddress"
-							onChangeText={setEmail}
-						/>
-						<TextInput
-							placeholder="Password"
-							textContentType="password"
-							onChangeText={setPassword}
-						/>
-						<CustomButton
-							onPress={() => {
-								createEntry({
-									groupLabel,
-									username,
-									email,
-									password,
-								});
-							}}
-							title="Save"
-						/>
-					</GestureHandlerRootView>
+		<View style={style.form}>
+			<View style={style.spacer} />
+			<GestureHandlerRootView>
+				<Text style={style.label}>Create Entry</Text>
+				<Text style={style.information}>
+					<Text
+						style={{
+							color: theme.colors.DANGER,
+							fontWeight: 'bold',
+						}}>
+						*
+					</Text>
+					{': '}
+					Required fields
+				</Text>
+				<Text style={style.information}>
+					<Text
+						style={{
+							color: theme.colors.WARNING,
+							fontWeight: 'bold',
+						}}>
+						*
+					</Text>
+					{': '}
+					At least one of the following fields is required
+				</Text>
+				<View style={style.input}>
+					<Text>
+						Group label
+						<Text style={{ color: theme.colors.DANGER }}>*</Text>
+					</Text>
+					<TextInput
+						placeholder="e.g. Facebook, Google, etc."
+						onChangeText={setGroupLabel}
+					/>
 				</View>
-			</View>
-		</>
+
+				<View style={style.input}>
+					<Text>
+						Email
+						<Text style={{ color: theme.colors.WARNING }}>*</Text>
+					</Text>
+					<TextInput
+						placeholder="e.g. JohnDoe@mail.com"
+						onChangeText={setEmail}
+					/>
+				</View>
+
+				<View style={style.input}>
+					<Text>
+						Username
+						<Text style={{ color: theme.colors.WARNING }}>*</Text>
+					</Text>
+					<TextInput
+						placeholder="e.g. JohnDoe"
+						onChangeText={setUsername}
+					/>
+				</View>
+
+				<View style={style.input}>
+					<Text>
+						Password
+						<Text style={{ color: theme.colors.DANGER }}>*</Text>
+					</Text>
+					<TextInput
+						placeholder="e.g. Password123"
+						onChangeText={setPassword}
+					/>
+				</View>
+
+				<CustomButton
+					titleStyle={[
+						{
+							color: theme.colors.TEXT_TINT,
+							textAlign: 'center',
+						},
+					]}
+					style={[
+						style.button,
+						{ color: theme.colors.TEXT, elevation: 8 },
+					]}
+					onPress={() => {
+						createEntry({
+							groupLabel,
+							username,
+							email,
+							password,
+						});
+					}}
+					title="Save"
+				/>
+			</GestureHandlerRootView>
+		</View>
 	);
 };
+
+const styles = theme =>
+	StyleSheet.create({
+		form: {
+			padding: 20,
+			backgroundColor: theme.colors.BACKGROUND_TINT,
+			borderRadius: 5,
+			width: '80%',
+		},
+		label: {
+			color: theme.colors.TEXT,
+			paddingTop: 0,
+			paddingBottom: 15,
+			fontSize: 20,
+			fontWeight: 'bold',
+		},
+		spacer: {
+			marginBottom: 20,
+		},
+		button: {
+			padding: 10,
+			borderRadius: 5,
+			margin: 10,
+			backgroundColor: theme.colors.SUCCESS,
+		},
+		input: {
+			padding: 10,
+			paddingBottom: 0,
+			borderRadius: 5,
+			margin: 10,
+			backgroundColor: theme.colors.INPUT,
+		},
+		information: {
+			color: theme.colors.TEXT,
+			paddingBottom: 5,
+		},
+	});
 
 export default CreateEntryForm;
