@@ -1,22 +1,26 @@
-import React, { createContext } from 'react';
-import { colors } from '../constantes/theme';
+import React, { useState } from 'react';
+import { colors } from '../constantes/colors';
+import { typography } from '../constantes/typography';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const ThemeContext = createContext();
+export const ThemeContext = React.createContext();
 
-function ThemeProvider({ children }) {
-	const isLigthTheme = true; // TODO: get theme from async storage
+const ThemeProvider = ({ children }) => {
+	const [isLightTheme, setLightTheme] = useState(true);
+	const toggleTheme = () => {
+    setLightTheme(previousState => !previousState);
+    AsyncStorage.setItem('theme', isLightTheme ? "true" : "false");
+  };
 
 	const theme = {
-		colors: isLigthTheme ? colors.LightTheme : colors.DarkTheme,
-		typographies: colors.Typographies,
+		colors: isLightTheme ? colors.light : colors.dark,
+		typography,
+		toggleTheme,
+		isLightTheme,
 	};
-
 	return (
-		<ThemeContext.Provider value={{ theme }}>
-			{children}
-		</ThemeContext.Provider>
+		<ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
 	);
-}
+};
 
 export default ThemeProvider;

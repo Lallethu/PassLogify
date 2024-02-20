@@ -1,15 +1,19 @@
-import { View, Text } from 'react-native';
 import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import FakeBottomTab from '../components/FakeBottomTab';
-import { STYLES } from '../constantes/styles';
 import CreateEntryForm from '../components/CreateEntryForm';
 import { FakeHeader } from '../components/FakeHeader';
+import useTheme from '../hooks/useTheme';
+import useThemedStyles from '../hooks/useThemeStyles';
 
 const CreateEntryScreen = () => {
+	const theme = useTheme();
+	const style = useThemedStyles(styles);
+
 	return (
 		<>
 			<FakeHeader />
-			<View style={STYLES.container}>
+			<View style={[style.containerFluid]}>
 				<CreateEntryForm />
 			</View>
 
@@ -17,5 +21,20 @@ const CreateEntryScreen = () => {
 		</>
 	);
 };
+
+const styles = theme =>
+	StyleSheet.create({
+		container: {
+			flex: 1,
+			justifyContent: 'center',
+			alignItems: 'center',
+		},
+		containerFluid: {
+			flex: 1,
+			justifyContent: 'center',
+			alignItems: 'center',
+			backgroundColor: theme.colors.BACKGROUND,
+		},
+	});
 
 export default CreateEntryScreen;
