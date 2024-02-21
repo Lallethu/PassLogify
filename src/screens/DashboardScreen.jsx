@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import FakeBottomTab from '../components/FakeBottomTab';
-import { useCreateEntry } from '../hooks/create-entry';
+import { useEntry } from '../hooks/useEntry';
 import { useFocusEffect } from '@react-navigation/core';
 import useTheme from '../hooks/useTheme';
 import useThemedStyles from '../hooks/useThemeStyles';
@@ -12,7 +12,7 @@ const DashboardScreen = () => {
 	const theme = useTheme();
 	const style = useThemedStyles(styles);
 	const [listOfLogins, setListOfLogins] = useState([]);
-	const { getData } = useCreateEntry();
+	const { getData } = useEntry();
 
 	// might be a good idea to move this to a custom hook or util function
 	const fetchData = async () => {
@@ -112,6 +112,7 @@ const DashboardScreen = () => {
 					{listOfLogins.length > 0 ? (
 						listOfLogins.map((login, index) => (
 							<ExpendableLoginCard
+                key={index}
 								{...{ login, index, styleFromTheme: style }}
 							/>
 						))
