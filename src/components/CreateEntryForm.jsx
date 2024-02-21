@@ -5,14 +5,14 @@ import {
 	GestureHandlerRootView,
 	TextInput,
 } from 'react-native-gesture-handler';
-import { useCreateEntry } from '../hooks/create-entry';
+import { useEntry } from '../hooks/useEntry';
 import useTheme from '../hooks/useTheme';
 import useThemedStyles from '../hooks/useThemeStyles';
 
 const CreateEntryForm = () => {
 	const theme = useTheme();
 	const style = useThemedStyles(styles);
-	const { createEntry } = useCreateEntry();
+	const { createEntry } = useEntry();
 	const [groupLabel, setGroupLabel] = useState('');
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
