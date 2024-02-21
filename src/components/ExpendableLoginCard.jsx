@@ -39,14 +39,13 @@ const ExpendableLoginCard = ({ login, index, styleFromTheme }) => {
 	return (
 		<>
 			{deleteEmptyKeys(login) && (
-				<View key={'view-' + index} style={styleFromTheme.card}>
+				<View style={styleFromTheme.card}>
 					<TouchableOpacity
 						onPress={() => {
 							switchVisible();
 						}}>
 						<Text
-							style={[styleFromTheme.text, styleFromTheme.title]}
-							key={'text-' + index}>
+							style={[styleFromTheme.text, styleFromTheme.title]}>
 							{login.groupLabel}
 						</Text>
 					</TouchableOpacity>
