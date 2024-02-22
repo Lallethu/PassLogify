@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const ExpendableLoginCard = ({ login, index, styleFromTheme }) => {
+const ExpendableLoginCard = ({ login, index, styleFromTheme, children }) => {
 	let [visible, setVisible] = useState(false);
 
 	const switchVisible = () => {
@@ -57,6 +57,7 @@ const ExpendableLoginCard = ({ login, index, styleFromTheme }) => {
 							<Text style={[styleFromTheme.text]}>
 								Password: {login.password}
 							</Text>
+              {children}
 						</View>
 					</View>
 				</View>
