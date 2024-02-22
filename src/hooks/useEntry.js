@@ -1,6 +1,9 @@
 import { Alert, ToastAndroid } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createEntryValidator, updateEntryValidator } from '../services/createEntryValidator';
+import {
+	createEntryValidator,
+	updateEntryValidator,
+} from '../services/createEntryValidator';
 import { useState } from 'react';
 
 const useToastMessage = message => {
@@ -22,7 +25,12 @@ const createDataObject = data => {
 	};
 
 	for (const key in dataGroup) {
-		if (dataGroup[key] === undefined || dataGroup[key] === '' || dataGroup[key] === null || dataGroup === true) {
+		if (
+			dataGroup[key] === undefined ||
+			dataGroup[key] === '' ||
+			dataGroup[key] === null ||
+			dataGroup === true
+		) {
 			delete dataGroup[key];
 		}
 	}
@@ -41,9 +49,9 @@ export const useEntry = () => {
 				const parsedData = data.map(login => {
 					return JSON.parse(login[1]);
 				});
-        if (parsedData === true) {
-          return;
-        }
+				if (parsedData === true) {
+					return;
+				}
 				if (parsedData.length > 0) {
 					return parsedData;
 				}
@@ -57,16 +65,30 @@ export const useEntry = () => {
 
 	const deleteData = async key => {
 		try {
-			await AsyncStorage.removeItem(key);
-			const value = await AsyncStorage.getItem(key);
-			if (value === null) {
-				useToastMessage('Data deleted');
-				setDataUser({});
-			} else {
-				useToastMessage('No data found');
-			}
+			const keys = await AsyncStorage.getAllKeys();
+			const entryKeys = keys.filter(k => k !== 'theme');
+			const data = await AsyncStorage.multiGet(entryKeys);
+			const parsedData = data.map(login => {
+				return JSON.parse(login[1]);
+			});
+			const newData = parsedData.filter(data => data.groupLabel !== key);
+			await AsyncStorage.multiRemove(entryKeys);
+			newData.map(async data => {
+				await AsyncStorage.setItem(
+					data.groupLabel,
+					JSON.stringify(data),
+				);
+			});
+
+			ToastAndroid.showWithGravityAndOffset(
+				'Entry deleted',
+				ToastAndroid.LONG,
+				ToastAndroid.BOTTOM,
+				15,
+				50,
+			);
 		} catch (e) {
-			console.log(e);
+			console.error(e);
 		}
 	};
 
@@ -78,7 +100,10 @@ export const useEntry = () => {
 				email,
 				password,
 			});
-			const validation = createEntryValidator(data, useToastMessage);
+			const validation = await createEntryValidator(
+				data,
+				useToastMessage,
+			);
 			if (!validation) {
 				console.log('validation failed', validation);
 				console.log('data', data);
@@ -144,18 +169,42 @@ export const useEntry = () => {
 		}
 	};
 
-	const updateEntry = async (key, data, oldData) => {
+	// update entry is used for now just to change the groupLabel
+	const updateEntry = async (oldGroupLabel, newGroupLabel) => {
 		try {
-      const newData = createDataObject(data);
-      const validation = updateEntryValidator(newData, oldData, useToastMessage);
-      if (!validation) {
-        console.log('validation failed', validation);
-        console.log('data', newData);
-        return;
-      }
-      await AsyncStorage.setItem(key, JSON.stringify(newData));
-      useToastMessage('Data updated');
-      setDataUser(newData);
+			const keys = await AsyncStorage.getAllKeys();
+			const entryKeys = keys.filter(k => k !== 'theme');
+			const validation = await updateEntryValidator(
+				{ groupLabel: newGroupLabel, oldGroupLabel },
+				useToastMessage,
+			);
+			if (!validation) {
+				return;
+			}
+			const data = await AsyncStorage.multiGet(entryKeys);
+			const parsedData = data.map(login => {
+				return JSON.parse(login[1]);
+			});
+			const newData = parsedData.map(data => {
+				if (data.groupLabel === oldGroupLabel) {
+					data.groupLabel = newGroupLabel;
+				}
+				return data;
+			});
+			await AsyncStorage.multiRemove(entryKeys);
+			newData.map(async data => {
+				await AsyncStorage.setItem(
+					data.groupLabel,
+					JSON.stringify(data),
+				);
+			});
+			ToastAndroid.showWithGravityAndOffset(
+				'Entry updated',
+				ToastAndroid.LONG,
+				ToastAndroid.BOTTOM,
+				15,
+				50,
+			);
 		} catch (e) {
 			console.error(e);
 		}
