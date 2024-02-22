@@ -21,7 +21,7 @@ But as a reminder, never give your passwords to anyone, not even the staff of Pa
 ## Installation
 
 1. Clone the repository by running `git clone git@github.com:Lallethu/PassLogify.git` in your terminal.
-2. Open the project folder and locate the `android/app/build/outputs/apk/debug` folder.
+2. Open the project folder and locate the `pre-release` folder at the root (pre-release branch as well).
 3. :warning: **APP STILL IN DEV** :warning: Copy the `app-debug.apk` file to your favorite messaging app and send it to yourself _(or use a USB cable to transfer it to your device)_.
 
 ## Usage
