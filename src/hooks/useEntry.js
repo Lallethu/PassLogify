@@ -1,6 +1,9 @@
 import { Alert, ToastAndroid } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createEntryValidator } from '../services/createEntryValidator';
+import {
+	createEntryValidator,
+	updateEntryValidator,
+} from '../services/createEntryValidator';
 import { useState } from 'react';
 
 const useToastMessage = message => {
@@ -22,7 +25,12 @@ const createDataObject = data => {
 	};
 
 	for (const key in dataGroup) {
-		if (dataGroup[key] === undefined) {
+		if (
+			dataGroup[key] === undefined ||
+			dataGroup[key] === '' ||
+			dataGroup[key] === null ||
+			dataGroup === true
+		) {
 			delete dataGroup[key];
 		}
 	}
@@ -30,7 +38,7 @@ const createDataObject = data => {
 	return dataGroup;
 };
 
-export const useCreateEntry = () => {
+export const useEntry = () => {
 	const [dataUser, setDataUser] = useState({});
 
 	const getData = async () => {
@@ -41,6 +49,9 @@ export const useCreateEntry = () => {
 				const parsedData = data.map(login => {
 					return JSON.parse(login[1]);
 				});
+				if (parsedData === true) {
+					return;
+				}
 				if (parsedData.length > 0) {
 					return parsedData;
 				}
@@ -54,16 +65,30 @@ export const useCreateEntry = () => {
 
 	const deleteData = async key => {
 		try {
-			await AsyncStorage.removeItem(key);
-			const value = await AsyncStorage.getItem(key);
-			if (value === null) {
-				useToastMessage('Data deleted');
-				setDataUser({});
-			} else {
-				useToastMessage('No data found');
-			}
+			const keys = await AsyncStorage.getAllKeys();
+			const entryKeys = keys.filter(k => k !== 'theme');
+			const data = await AsyncStorage.multiGet(entryKeys);
+			const parsedData = data.map(login => {
+				return JSON.parse(login[1]);
+			});
+			const newData = parsedData.filter(data => data.groupLabel !== key);
+			await AsyncStorage.multiRemove(entryKeys);
+			newData.map(async data => {
+				await AsyncStorage.setItem(
+					data.groupLabel,
+					JSON.stringify(data),
+				);
+			});
+
+			ToastAndroid.showWithGravityAndOffset(
+				'Entry deleted',
+				ToastAndroid.LONG,
+				ToastAndroid.BOTTOM,
+				15,
+				50,
+			);
 		} catch (e) {
-			console.log(e);
+			console.error(e);
 		}
 	};
 
@@ -75,8 +100,13 @@ export const useCreateEntry = () => {
 				email,
 				password,
 			});
-			const validation = createEntryValidator(data, useToastMessage);
+			const validation = await createEntryValidator(
+				data,
+				useToastMessage,
+			);
 			if (!validation) {
+				console.log('validation failed', validation);
+				console.log('data', data);
 				return;
 			}
 			await AsyncStorage.setItem(data.groupLabel, JSON.stringify(data));
@@ -97,7 +127,7 @@ export const useCreateEntry = () => {
 				const parsedData = data.map(login => {
 					return JSON.parse(login[1]);
 				});
-        
+
 				if (parsedData.length > 0) {
 					Alert.alert(
 						'Are you sure?',
@@ -112,13 +142,13 @@ export const useCreateEntry = () => {
 								text: 'Yes, delete everything',
 								onPress: async () => {
 									await AsyncStorage.multiRemove(entryKeys);
-                  ToastAndroid.showWithGravityAndOffset(
-                    'All entries deleted',
-                    ToastAndroid.LONG,
-                    ToastAndroid.BOTTOM,
-                    15,
-                    50,
-                  );
+									ToastAndroid.showWithGravityAndOffset(
+										'All entries deleted',
+										ToastAndroid.LONG,
+										ToastAndroid.BOTTOM,
+										15,
+										50,
+									);
 								},
 							},
 						],
@@ -139,10 +169,52 @@ export const useCreateEntry = () => {
 		}
 	};
 
+	// update entry is used for now just to change the groupLabel
+	const updateEntry = async (oldGroupLabel, newGroupLabel) => {
+		try {
+			const keys = await AsyncStorage.getAllKeys();
+			const entryKeys = keys.filter(k => k !== 'theme');
+			const validation = await updateEntryValidator(
+				{ groupLabel: newGroupLabel, oldGroupLabel },
+				useToastMessage,
+			);
+			if (!validation) {
+				return;
+			}
+			const data = await AsyncStorage.multiGet(entryKeys);
+			const parsedData = data.map(login => {
+				return JSON.parse(login[1]);
+			});
+			const newData = parsedData.map(data => {
+				if (data.groupLabel === oldGroupLabel) {
+					data.groupLabel = newGroupLabel;
+				}
+				return data;
+			});
+			await AsyncStorage.multiRemove(entryKeys);
+			newData.map(async data => {
+				await AsyncStorage.setItem(
+					data.groupLabel,
+					JSON.stringify(data),
+				);
+			});
+			ToastAndroid.showWithGravityAndOffset(
+				'Entry updated',
+				ToastAndroid.LONG,
+				ToastAndroid.BOTTOM,
+				15,
+				50,
+			);
+		} catch (e) {
+			console.error(e);
+		}
+	};
+
 	return {
 		getData,
 		deleteAllEntries,
 		deleteData,
 		createEntry,
+		updateEntry,
 	};
 };

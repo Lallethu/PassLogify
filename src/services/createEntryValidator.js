@@ -1,4 +1,17 @@
-export const createEntryValidator = (entry, toaster) => {
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const doLoginAllreadyExist = async entry => {
+	try {
+		const keys = await AsyncStorage.getAllKeys();
+		const keysLowerCase = keys.map(key => key.trim().toLowerCase());
+		const groupLabelLowerCase = entry.groupLabel.trim().toLowerCase();
+		return keysLowerCase.includes(groupLabelLowerCase);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export const createEntryValidator = async (entry, toaster) => {
 	const emailRegex = /\S+@\S+\.\S+/;
 
 	if (!entry) {
@@ -41,5 +54,22 @@ export const createEntryValidator = (entry, toaster) => {
 		return false;
 	}
 
+	if (await doLoginAllreadyExist(entry)) {
+		toaster('This entry already exists');
+		return false;
+	}
+
+	return true;
+};
+
+export const updateEntryValidator = async (entry, toaster) => {
+	const keys = await AsyncStorage.getAllKeys();
+	const keysLowerCase = keys.map(key => key.trim().toLowerCase());
+	const groupLabelLowerCase = entry.groupLabel.trim().toLowerCase();
+	const groupLabelChanged = entry.groupLabel !== entry.oldGroupLabel;
+	if (groupLabelChanged && keysLowerCase.includes(groupLabelLowerCase)) {
+		toaster('This entry already exists');
+		return false;
+	}
 	return true;
 };

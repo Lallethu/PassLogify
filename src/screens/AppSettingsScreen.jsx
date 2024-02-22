@@ -5,10 +5,10 @@ import useThemedStyles from '../hooks/useThemeStyles';
 import { ScrollView } from 'react-native-gesture-handler';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import FakeBottomTab from '../components/FakeBottomTab';
-import { useCreateEntry } from '../hooks/create-entry';
+import { useEntry } from '../hooks/useEntry';
 
 const AppSettingsScreen = () => {
-	const { deleteAllEntries } = useCreateEntry();
+	const { deleteAllEntries } = useEntry();
 	const theme = useTheme();
 	const style = useThemedStyles(styles);
 
