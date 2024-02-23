@@ -15,7 +15,7 @@ const CreateEntryScreen = () => {
 	const style = useThemedStyles(styles);
 
 	return (
-		<GestureHandlerRootView style={{ flex: 1 }}>
+		<GestureHandlerRootView style={{ flex: 1, backgroundColor: theme.colors.BACKGROUND }}>
 			<FakeHeader />
 			<ScrollView style={{ width: '100%' }}>
 				<View style={[style.containerFluid, { paddingBottom: 20 }]}>
@@ -38,7 +38,6 @@ const styles = theme =>
 			flex: 1,
 			justifyContent: 'center',
 			alignItems: 'center',
-			backgroundColor: theme.colors.BACKGROUND,
 		},
 	});
 
