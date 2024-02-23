@@ -1,7 +1,8 @@
 import { useTheme } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, Dimensions } from 'react-native';
 import useThemedStyles from '../hooks/useThemeStyles';
+const { height } = Dimensions.get('window');
 
 const CustomPrompt = ({ visible, onClose, onSubmit, text, placeholder="enter a value" }) => {
 	const [inputValue, setInputValue] = useState('');
@@ -44,7 +45,7 @@ const styles = theme =>
 			alignItems: 'center',
 			backgroundColor: theme.colors.BACKGROUND,
 			position: 'absolute',
-			top: 20,
+      top: height / 3,
 		},
 		label: {
 			color: theme.colors.TEXT,
