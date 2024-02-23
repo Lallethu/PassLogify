@@ -15,25 +15,24 @@ const { width, height } = Dimensions.get('screen');
 const LandingScreen = ({ navigation }) => {
 	const theme = useTheme();
 	const style = useThemedStyles(styles);
-	const [position, setPosition] = useState({ x: 0, y: 0 }); // position of the user finger
+	const [position, setPosition] = useState({ x: 0, y: 0 });
 	const panResponder = useRef(
-		// panResponder to handle the user finger
 		PanResponder.create({
 			onStartShouldSetPanResponder: () => true,
 			onPanResponderMove: (evt, gestureState) => {
 				setPosition({
-					x: 0, // we don't want to move the image left or right
-					y: gestureState.dy, // we want to move the image up and down
+					x: 0,
+					y: gestureState.dy,
 				});
 			},
 			onPanResponderRelease: (evt, gestureState) => {
-				const { dy } = gestureState; // get the distance the user finger moved
-				const imgHeight = height / 2; // the height of the image
+				const { dy } = gestureState;
+				const imgHeight = height / 2;
 				if (dy < -imgHeight / 2 || dy > imgHeight / 2) {
 					redirectToDashboard();
 				}
 
-				setPosition({ x: 0, y: 0 }); // return the image to its original position
+				setPosition({ x: 0, y: 0 });
 			},
 		}),
 	).current;
@@ -51,7 +50,7 @@ const LandingScreen = ({ navigation }) => {
 					resizeMode="contain"
 				/>
 			</View>
-			<Text>Unlock 🔓</Text>
+			<Text style={{color: style.textTarget.color }}>Unlock 🔓</Text>
 			<View style={style.container} {...panResponder.panHandlers}>
 				<Image
 					style={[
