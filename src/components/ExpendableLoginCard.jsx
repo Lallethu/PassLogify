@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
+import { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const ExpendableLoginCard = ({ login, index, styleFromTheme, children }) => {
+const ExpendableLoginCard = ({
+	login,
+	index,
+	styleFromTheme,
+	children,
+	organizable = false,
+	draggableObject,
+}) => {
 	let [visible, setVisible] = useState(false);
 
 	const switchVisible = () => {
@@ -36,6 +44,51 @@ const ExpendableLoginCard = ({ login, index, styleFromTheme, children }) => {
 		</>
 	);
 
+	if (organizable) {
+		const { item, drag, isActive } = draggableObject;
+
+		return (
+			<>
+				{deleteEmptyKeys(login) && (
+					<ScaleDecorator>
+						<View style={styleFromTheme.card}>
+							<TouchableOpacity
+								onPress={() => {
+									switchVisible();
+								}}
+								onLongPress={drag}
+								style={{
+									elevation: isActive ? 8 : 0,
+								}}>
+								<Text
+									style={[
+										styleFromTheme.text,
+										styleFromTheme.title,
+									]}>
+									{login.groupLabel}
+								</Text>
+							</TouchableOpacity>
+
+							<View
+								style={[
+									{ display: visible ? 'flex' : 'none' },
+								]}>
+								<Text style={styleFromTheme.spacerVertical} />
+								<View style={{ padding: 10 }}>
+									{oneOrBoth(login)}
+									<Text style={[styleFromTheme.text]}>
+										Password: {login.password}
+									</Text>
+									{children}
+								</View>
+							</View>
+						</View>
+					</ScaleDecorator>
+				)}
+			</>
+		);
+	}
+
 	return (
 		<>
 			{deleteEmptyKeys(login) && (
@@ -57,7 +110,7 @@ const ExpendableLoginCard = ({ login, index, styleFromTheme, children }) => {
 							<Text style={[styleFromTheme.text]}>
 								Password: {login.password}
 							</Text>
-              {children}
+							{children}
 						</View>
 					</View>
 				</View>
