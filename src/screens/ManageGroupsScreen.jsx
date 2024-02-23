@@ -19,7 +19,7 @@ const ManageGroupsScreen = () => {
 	const theme = useTheme();
 	const style = useThemedStyles(styles);
 
-	const { getData, deleteData, updateEntry } = useEntry();
+	const { getData, deleteData, updateEntry, updatePriority } = useEntry();
 	const [listOfLogins, setListOfLogins] = useState([]);
 	const [isPromptVisible, setIsPromptVisible] = useState(false);
 	const [groupLabel, setGroupLabel] = useState('');
@@ -90,26 +90,9 @@ const ManageGroupsScreen = () => {
 	);
 
 	const handleReorganize = async logins => {
-		try {
-			const orderedData = logins.map((login, index) => {
-				return {
-					...login,
-					priority: index + 1,
-				};
-			});
-			await AsyncStorage.clear();
-			orderedData.forEach(async login => {
-				await AsyncStorage.setItem(
-					login.groupLabel,
-					JSON.stringify(login),
-				);
-			});
-
-			const data = await getData();
-			setListOfLogins(data);
-		} catch (error) {
-			console.log('Error reorganizing groups', error);
-		}
+    await updatePriority(logins);
+    const data = await getData();
+    setListOfLogins(data);
 	};
 
 	return (

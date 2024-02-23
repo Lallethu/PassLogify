@@ -17,16 +17,16 @@ const useToastMessage = message => {
 };
 
 const orderBy = (arr, priority) => {
-  return arr.sort((a, b) => {
-    if (a[priority] < b[priority]) {
-      return -1;
-    }
-    if (a[priority] > b[priority]) {
-      return 1;
-    }
-    return 0;
-  });
-}
+	return arr.sort((a, b) => {
+		if (a[priority] < b[priority]) {
+			return -1;
+		}
+		if (a[priority] > b[priority]) {
+			return 1;
+		}
+		return 0;
+	});
+};
 
 const createDataObject = data => {
 	const dataGroup = {
@@ -34,7 +34,7 @@ const createDataObject = data => {
 		username: data.username,
 		email: data?.email,
 		password: data?.password,
-    priority: data?.priority,
+		priority: data?.priority,
 	};
 
 	for (const key in dataGroup) {
@@ -66,8 +66,8 @@ export const useEntry = () => {
 					return;
 				}
 				if (parsedData.length > 0) {
-          const orderedData = orderBy(parsedData, 'priority');
-          return orderedData;
+					const orderedData = orderBy(parsedData, 'priority');
+					return orderedData;
 				}
 			} else {
 				return [];
@@ -108,14 +108,15 @@ export const useEntry = () => {
 
 	const createEntry = async ({ groupLabel, username, email, password }) => {
 		try {
-      const keys = await AsyncStorage.getAllKeys();
-      const lengthExcludindKeyTheme = keys.filter(k => k !== 'theme').length + 1;
+			const keys = await AsyncStorage.getAllKeys();
+			const lengthExcludindKeyTheme =
+				keys.filter(k => k !== 'theme').length + 1;
 			const data = createDataObject({
 				groupLabel,
 				username,
 				email,
 				password,
-        priority: lengthExcludindKeyTheme,
+				priority: lengthExcludindKeyTheme,
 			});
 			const validation = await createEntryValidator(
 				data,
@@ -126,7 +127,7 @@ export const useEntry = () => {
 				console.log('data', data);
 				return;
 			}
-			await AsyncStorage.setItem(data.groupLabel, JSON.stringify(data));      
+			await AsyncStorage.setItem(data.groupLabel, JSON.stringify(data));
 			useToastMessage('Data saved');
 			setDataUser(data);
 		} catch (e) {
@@ -227,11 +228,42 @@ export const useEntry = () => {
 		}
 	};
 
+	const updatePriority = async logins => {
+		try {
+      const keys = await AsyncStorage.getAllKeys();
+      const entryKeys = keys.filter(k => k !== 'theme');
+      const data = await AsyncStorage.multiGet(entryKeys);
+			const orderedData = logins.map((login, index) => {
+				return {
+					...login,
+					priority: index + 1,
+				};
+			});
+      
+			orderedData.forEach(async login => {
+				await AsyncStorage.setItem(
+					login.groupLabel,
+					JSON.stringify(login),
+				);
+			});
+      ToastAndroid.showWithGravityAndOffset(
+        'Entries reorganized',
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        15,
+        50,
+      );
+		} catch (error) {
+			console.log('Error reorganizing groups', error);
+		}
+	};
+
 	return {
 		getData,
 		deleteAllEntries,
 		deleteData,
 		createEntry,
 		updateEntry,
+		updatePriority,
 	};
 };
