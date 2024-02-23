@@ -7,11 +7,13 @@ import useThemedStyles from '../hooks/useThemeStyles';
 import { useEntry } from '../hooks/useEntry';
 import { useFocusEffect } from '@react-navigation/native';
 import CustomPrompt from '../components/CustomPrompt';
-import {
-	GestureHandlerRootView,
-	ScrollView,
-} from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ExpendableLoginCard from '../components/ExpendableLoginCard';
+import {
+	NestableDraggableFlatList,
+	NestableScrollContainer,
+} from 'react-native-draggable-flatlist';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ManageGroupsScreen = () => {
 	const theme = useTheme();
@@ -39,11 +41,9 @@ const ManageGroupsScreen = () => {
 						const data = await getData();
 						setListOfLogins(data);
 
-            if (isPromptVisible) {
-              setIsPromptVisible(false);
-            }
-						console.log('data', data);
-						console.log('logins', listOfLogins);
+						if (isPromptVisible) {
+							setIsPromptVisible(false);
+						}
 					},
 				},
 			],
@@ -60,24 +60,24 @@ const ManageGroupsScreen = () => {
 		setIsPromptVisible(false);
 	};
 
-const [isRenaming, setIsRenaming] = useState(false);
+	const [isRenaming, setIsRenaming] = useState(false);
 
-const handleRenameGroup = async newGroupLabel => {
-  await updateEntry(groupLabel, newGroupLabel);
-  setIsPromptVisible(false);
-  setIsRenaming(true);
-};
+	const handleRenameGroup = async newGroupLabel => {
+		await updateEntry(groupLabel, newGroupLabel);
+		setIsPromptVisible(false);
+		setIsRenaming(true);
+	};
 
-useEffect(() => {
-  if (isRenaming) {
-    const fetchData = async () => {
-      const data = await getData();
-      setListOfLogins(data);
-      setIsRenaming(false);
-    };
-    fetchData();
-  }
-}, [isRenaming]);
+	useEffect(() => {
+		if (isRenaming) {
+			const fetchData = async () => {
+				const data = await getData();
+				setListOfLogins(data);
+				setIsRenaming(false);
+			};
+			fetchData();
+		}
+	}, [isRenaming]);
 
 	useFocusEffect(
 		useCallback(() => {
@@ -89,26 +89,65 @@ useEffect(() => {
 		}, []),
 	);
 
+	const handleReorganize = async logins => {
+		try {
+			const orderedData = logins.map((login, index) => {
+				return {
+					...login,
+					priority: index + 1,
+				};
+			});
+			await AsyncStorage.clear();
+			orderedData.forEach(async login => {
+				await AsyncStorage.setItem(
+					login.groupLabel,
+					JSON.stringify(login),
+				);
+			});
+
+			const data = await getData();
+			setListOfLogins(data);
+		} catch (error) {
+			console.log('Error reorganizing groups', error);
+		}
+	};
+
 	return (
 		<GestureHandlerRootView
 			style={[{ flex: 1, backgroundColor: theme.colors.BACKGROUND }]}>
 			<FakeHeader />
-			<View style={[style.container]}>
-				<Text style={[style.title, { marginBottom: 15 }]}>
-					Manage Groups
-				</Text>
+			<View
+				style={[
+					style.container,
+					{ height: '100%', marginVertical: 20, paddingBottom: 45 },
+				]}>
+				<Text style={[style.title]}>Manage Groups</Text>
+				<View style={{ height: 20 }} />
 				<Text style={[style.text, style.box]}>
 					Here you can manage your groups. You can delete a group and
 					all entries associated with it. You can also rename a group.
 					{'\n'}As well as reorganize the order of the groups.
 				</Text>
-				<View style={{ height: 20 }} />
-				<ScrollView style={{ width: '100%' }}>
-					{listOfLogins.length > 0 ? (
-						listOfLogins.map((login, index) => (
+				<View style={{ height: 60 }} />
+				<NestableScrollContainer
+					style={{ width: '100%', marginTop: -40 }}>
+					<NestableDraggableFlatList
+						data={listOfLogins}
+						renderItem={({ item, index, drag }) => (
 							<ExpendableLoginCard
+								organizable
+								draggableObject={{
+									item,
+									drag,
+									isActive: false,
+								}}
+								onLongPress={drag}
 								key={index}
-								{...{ login, index, styleFromTheme: style }}>
+								{...{
+									login: item,
+									index,
+									styleFromTheme: style,
+								}}>
 								<Text
 									style={[
 										style.text,
@@ -117,9 +156,9 @@ useEffect(() => {
 											fontWeight: 'bold',
 										},
 									]}
-									onPress={() => {
-										onDeleteGroup(login.groupLabel);
-									}}>
+									onPress={() =>
+										onDeleteGroup(item.groupLabel)
+									}>
 									Delete
 								</Text>
 								<Text
@@ -130,23 +169,29 @@ useEffect(() => {
 											fontWeight: 'bold',
 										},
 									]}
-									onPress={() => {
-										openRenamePrompt(login.groupLabel);
-									}}>
+									onPress={() =>
+										openRenamePrompt(item.groupLabel)
+									}>
 									Rename
 								</Text>
 							</ExpendableLoginCard>
-						))
-					) : (
-						<Text>No logins yet :)</Text>
-					)}
-				</ScrollView>
+						)}
+						keyExtractor={(item, index) =>
+							`draggable-item-${item.groupLabel}`
+						}
+						onDragEnd={async ({ data }) => {
+							await handleReorganize(data);
+
+							console.log('data', data);
+						}}
+					/>
+				</NestableScrollContainer>
 				<CustomPrompt
 					visible={isPromptVisible}
 					onClose={handleClosePrompt}
 					onSubmit={handleRenameGroup}
-          text="Enter a new group label"
-          placeholder="e.g. Social Media"
+					text="Enter a new group label"
+					placeholder="e.g. Social Media"
 				/>
 			</View>
 			<FakeBottomTab route={'Manage'} />
@@ -264,81 +309,3 @@ const styles = theme =>
 	});
 
 export default ManageGroupsScreen;
-
-/* dump trash blyat
-
-<GestureHandlerRootView style={{ flex: 1 }}>
-			<FakeHeader />
-			<View style={[style.container]}>
-				<ScrollView style={{ width: '100%' }}>
-					<Text style={[style.title, style.text]}>Manage Groups</Text>
-					<Text style={[style.text]}>
-						Here you can manage your groups. You can delete a group
-						and all entries associated with it. You can also rename
-						a group.
-					</Text>
-					<View style={{ height: 20 }} />
-
-					{listOfLogins ? (
-						listOfLogins.map((group, index) => {
-							if (group.groupLabel === '') return;
-							if (group[0] === undefined) return;
-							return (
-								<View
-									key={index}
-									style={[
-										style.card,
-										{
-											backgroundColor:
-												theme.colors.BACKGROUND_TINT,
-											color: theme.colors.TEXT,
-										},
-									]}>
-									<Text
-										style={[
-											style.text,
-											{ fontWeight: 'bold' },
-										]}>
-										{group.groupLabel}
-									</Text>
-									<View style={{ flexDirection: 'row' }}>
-										<Text
-											style={[
-												style.text,
-												{
-													color: theme.colors.DANGER,
-													fontWeight: 'bold',
-												},
-											]}
-											onPress={() => {
-												// deleteGroup(group.groupLabel);
-											}}>
-											Delete
-										</Text>
-
-										<Text
-											style={[
-												style.text,
-												{
-													color: theme.colors.WARNING,
-													fontWeight: 'bold',
-												},
-											]}
-											onPress={() => {
-												// renameGroup(group.groupLabel);
-											}}>
-											Rename
-										</Text>
-									</View>
-								</View>
-							);
-						})
-					) : (
-						<Text style={[style.text]}>No groups found</Text>
-					)}
-				</ScrollView>
-			</View>
-
-			<FakeBottomTab route={'Manage'} />
-		</GestureHandlerRootView>
-*/
