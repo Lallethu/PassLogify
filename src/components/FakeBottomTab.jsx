@@ -27,8 +27,8 @@ const FakeBottomTab = ({ route }) => {
 				style={style.tab}
 				onPress={() => handleNavigate('Manage')}>
 				<Image
-					style={style.tab.img}
-					source={require('../assets/background.png')}
+					style={{ width: "100%", height: 30, resizeMode: "contain"}}
+					source={require('../assets/manageEntries.png')}
 				/>
 				<Text
 					style={
@@ -43,8 +43,8 @@ const FakeBottomTab = ({ route }) => {
 				style={style.tab}
 				onPress={() => handleNavigate('Create')}>
 				<Image
-					style={style.tab.img}
-					source={require('../assets/background.png')}
+					style={{ width: "100%", height: 30, resizeMode: "contain"}}
+					source={require('../assets/createEntry.png')}
 				/>
 				<Text
 					style={[
@@ -57,7 +57,7 @@ const FakeBottomTab = ({ route }) => {
 			</TouchableOpacity>
 			<TouchableOpacity style={style.tab}>
 				<Image
-					style={style.tab.img}
+					style={{ width: "100%", height: 30, resizeMode: "contain"}}
 					source={require('../assets/background.png')}
 				/>
 				<Text style={style.tabText}>SURPRISE</Text>
@@ -82,10 +82,8 @@ const styles = theme =>
 			flex: 1,
 			alignItems: 'center',
 			paddingTop: 10,
-			img: {
-				width: 20,
-				height: 20,
-			},
+			minHeight: 60,
+			minWidth: '33%',
 		},
 		tabText: {
 			fontSize: 16,
