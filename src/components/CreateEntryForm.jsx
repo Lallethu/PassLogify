@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { CustomButton } from './CustomButton';
 import {
@@ -8,6 +8,7 @@ import {
 import { useEntry } from '../hooks/useEntry';
 import useTheme from '../hooks/useTheme';
 import useThemedStyles from '../hooks/useThemeStyles';
+import PasswordGenerator from '../utils/passwordGenerator';
 
 const CreateEntryForm = () => {
 	const theme = useTheme();
@@ -17,6 +18,38 @@ const CreateEntryForm = () => {
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const passwordRef = useRef(null);
+
+	const pssWrdGnrt = new PasswordGenerator();
+
+	const handlePasswordGeneration = () => {
+		pssWrdGnrt.generatePassword();
+		setPassword(pssWrdGnrt.getPassword());
+		passwordRef.current.setNativeProps({ text: pssWrdGnrt.getPassword() });
+	};
+
+	const GeneratePasswordButton = () => {
+		return (
+			<CustomButton
+				titleStyle={[
+					{
+						color: theme.colors.TEXT_TINT,
+						textAlign: 'center',
+					},
+				]}
+				style={[
+					style.button,
+					{
+						color: theme.colors.TEXT,
+						elevation: 8,
+						backgroundColor: theme.colors.INFORMATION,
+					},
+				]}
+				onPress={handlePasswordGeneration}
+				title="Generate Password"
+			/>
+		);
+	};
 
 	return (
 		<View style={style.form}>
@@ -85,7 +118,9 @@ const CreateEntryForm = () => {
 					<TextInput
 						placeholder="e.g. Password123"
 						onChangeText={setPassword}
+						ref={passwordRef}
 					/>
+					<GeneratePasswordButton />
 				</View>
 
 				<CustomButton
@@ -118,7 +153,7 @@ const styles = theme =>
 	StyleSheet.create({
 		form: {
 			padding: 18,
-      marginTop: 18,
+			marginTop: 18,
 			backgroundColor: theme.colors.BACKGROUND_TINT,
 			borderRadius: 5,
 			width: '80%',
