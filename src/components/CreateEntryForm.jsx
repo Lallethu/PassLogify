@@ -20,7 +20,6 @@ const CreateEntryForm = () => {
 
 	return (
 		<View style={style.form}>
-			<View style={style.spacer} />
 			<GestureHandlerRootView>
 				<Text style={style.label}>Create Entry</Text>
 				<Text style={style.information}>
@@ -118,7 +117,8 @@ const CreateEntryForm = () => {
 const styles = theme =>
 	StyleSheet.create({
 		form: {
-			padding: 20,
+			padding: 18,
+      marginTop: 18,
 			backgroundColor: theme.colors.BACKGROUND_TINT,
 			borderRadius: 5,
 			width: '80%',
